@@ -21,8 +21,10 @@ void displayUserMenu(struct InventoryData *data)
 		printf("Enter your choice: ");
 		while (scanf("%d", &choice) != 1)
 		{
+			CLEAR_SCREEN();
 			printf("Invalid input. Please enter a number.\n\n");
 			displayMainMenu();
+			printf("6. Exit\n");
 			printf("Enter your choice: ");
 			while (getchar() != '\n')
 				;
@@ -46,9 +48,10 @@ void displayUserMenu(struct InventoryData *data)
 			saveToFile(data);
 			break;
 		case 6:
-			printf("Exiting program.\n");
+			printf("Logging out!");
 			break;
 		default:
+			CLEAR_SCREEN();
 			printf("Invalid choice. Please try again.\n");
 		}
 
@@ -69,11 +72,13 @@ void displayAdminMenu(struct InventoryData *data)
 		printf("Enter your choice: ");
 		while (scanf("%d", &choice) != 1)
 		{
+			CLEAR_SCREEN();
 			printf("Invalid input. Please enter a number.\n\n");
 			displayMainMenu();
 			printf("6. Show Total Value\n");
 			printf("7. Update Item\n");
-			printf("8. Exit\n");
+			printf("8. Remove User\n");
+			printf("9. Exit\n");
 			printf("Enter your choice: ");
 			while (getchar() != '\n')
 				;
@@ -106,9 +111,10 @@ void displayAdminMenu(struct InventoryData *data)
 			removeUser(data);
 			break;
 		case 9:
-			printf("Exiting program.\n");
+			printf("Logging out!");
 			break;
 		default:
+			CLEAR_SCREEN();
 			printf("Invalid choice. Please try again.\n");
 		}
 
@@ -197,47 +203,59 @@ void displayUsers(struct InventoryData *data)
 	}
 }
 
-void removeUser(struct InventoryData *data) {
-    displayUsers(data);
+void removeUser(struct InventoryData *data)
+{
+	displayUsers(data);
 
-    if (data->userCount == 0) {
-        return;
-    }
+	if (data->userCount == 0)
+	{
+		return;
+	}
 
-    int userNumber;
-    printf("\nEnter the number corresponding to the user to remove (0 to cancel): ");
-    while (1) {
-        if (scanf("%d", &userNumber) != 1 || userNumber < 0 || userNumber > data->userCount) {
-            CLEAR_SCREEN();
-            displayUsers(data);
-            printf("Invalid input. Please enter a valid number.\n\n");
-            printf("\nEnter the number corresponding to the user to remove (0 to cancel): ");
-            while (getchar() != '\n');
-        } else {
-            break;
-        }
-    }
+	int userNumber;
+	printf("\nEnter the number corresponding to the user to remove (0 to cancel): ");
+	while (1)
+	{
+		if (scanf("%d", &userNumber) != 1 || userNumber < 0 || userNumber > data->userCount)
+		{
+			CLEAR_SCREEN();
+			displayUsers(data);
+			printf("Invalid input. Please enter a valid number.\n\n");
+			printf("\nEnter the number corresponding to the user to remove (0 to cancel): ");
+			while (getchar() != '\n')
+				;
+		}
+		else
+		{
+			break;
+		}
+	}
 
-    if (userNumber == 0) {
-        CLEAR_SCREEN();
-        printf("User removal canceled.\n");
-        return;
-    }
+	if (userNumber == 0)
+	{
+		CLEAR_SCREEN();
+		printf("User removal canceled.\n");
+		return;
+	}
 
-    int userIndex = userNumber - 1;
+	int userIndex = userNumber - 1;
 
-    if (data->users[userIndex].userType == ADMIN_USER) {
-        CLEAR_SCREEN();
-        printf("Error: Admin users cannot be removed.\n");
-    } else {
-        for (int i = userIndex; i < data->userCount - 1; i++) {
-            data->users[i] = data->users[i + 1];
-        }
+	if (data->users[userIndex].userType == ADMIN_USER)
+	{
+		CLEAR_SCREEN();
+		printf("Error: Admin users cannot be removed.\n");
+	}
+	else
+	{
+		for (int i = userIndex; i < data->userCount - 1; i++)
+		{
+			data->users[i] = data->users[i + 1];
+		}
 
-        (data->userCount)--;
-        CLEAR_SCREEN();
-        printf("User removed successfully!\n");
-    }
+		(data->userCount)--;
+		CLEAR_SCREEN();
+		printf("User removed successfully!\n");
+	}
 }
 
 int authenticateUser(struct InventoryData *data, char *username, char *password)

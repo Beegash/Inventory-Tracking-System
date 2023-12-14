@@ -1,3 +1,5 @@
 iozmen 1234 1
 nizam 1234 1
 ali 1234 1
+bayraker 1234 0
+simsek 1234 0

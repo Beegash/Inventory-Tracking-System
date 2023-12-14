@@ -58,6 +58,7 @@ int main()
 					displayUserMenu(&data);
 				else if (data.users[userIndex].userType == ADMIN_USER)
 					displayAdminMenu(&data);
+				CLEAR_SCREEN();
 			}
 			else
 			{
@@ -77,10 +78,8 @@ int main()
 	} while (choice != 4);
 
 	saveUsersToFile(&data);
-
 	free(data.inventory);
 	CLEAR_SCREEN();
-
-	printf("System Shutting Down");
+	printf("Exiting program.\n");
 	return 0;
 }

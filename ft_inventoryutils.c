@@ -235,11 +235,10 @@ void updateItem(struct InventoryData *data)
             scanf("%s", newName);
             for (int j = 0; j < data->itemCount; j++)
             {
-                if ((strcmp(data->inventory[j].name, newName) == 0 && data->inventory[j].id != itemId) ||
-                    (data->inventory[j].id == itemId && strcmp(data->inventory[j].name, newName) != 0))
+                if (((strcmp(data->inventory[j].name, newName) == 0 || strcmp(data->inventory[j].name, newName) == 32 || strcmp(data->inventory[j].name, newName) == -32) && data->inventory[j].id != itemId))
                 {
                     CLEAR_SCREEN();
-                    printf("Error: An item with the same name or ID already exists. Item not updated.\n");
+                    printf("Error: An item with the same name exist or invalid name character. Item not updated.\n");
                     return;
                 }
             }
@@ -291,9 +290,9 @@ void calculateInventoryTotal(struct InventoryData *data)
 		totalItems += data->inventory[i].quantity;
 		totalValue += data->inventory[i].price * data->inventory[i].quantity;
 	}
-
+	CLEAR_SCREEN();
 	printf("Total number of items in inventory: %d\n", totalItems);
-	printf("Total value of inventory: %.2f\n", totalValue);
+	printf("Total value of inventory: %.2f$\n", totalValue);
 }
 
 void saveToFile(struct InventoryData *data)
