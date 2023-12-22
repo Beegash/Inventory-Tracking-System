@@ -87,7 +87,7 @@ void displayAdminMenu(struct InventoryData *data)
 		switch (choice)
 		{
 		case 1:
-			addItem(data);
+			addItemDoublePointer(&data);
 			break;
 		case 2:
 			removeItem(data);
@@ -180,6 +180,26 @@ void addUser(struct InventoryData *data)
 	CLEAR_SCREEN();
 	printf("User added successfully!\n");
 	saveUsersToFile(data);
+}
+
+void userList(struct User ***users, int *userCount, const char *newUsername, const char *newPassword)
+{
+	struct User *newUser = malloc(sizeof(struct User));
+	if (!newUser)
+	{
+		perror("Memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	strcpy(newUser->username, newUsername);
+	strcpy(newUser->password, newPassword);
+	*users = realloc(*users, (*userCount + 1) * sizeof(struct User *));
+	if (!*users)
+	{
+		perror("Memory reallocation failed");
+		exit(EXIT_FAILURE);
+	}
+	(*users)[*userCount] = newUser;
+	(*userCount)++;
 }
 
 void displayUsers(struct InventoryData *data)

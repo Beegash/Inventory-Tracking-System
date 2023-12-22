@@ -80,6 +80,89 @@ void addItem(struct InventoryData *data)
     printf("Item added successfully!\n");
 }
 
+void addItemDoublePointer(struct InventoryData **data)
+{
+    CLEAR_SCREEN();
+    printf("\nEnter item details:\n");
+
+    if ((*data)->itemCount >= MAX_ITEMS)
+    {
+        printf("Error: Maximum number of items exceeded.\n");
+        return;
+    }
+
+    printf("ID: ");
+    int newId;
+    while (scanf("%d", &newId) != 1 || newId < 0)
+    {
+        CLEAR_SCREEN();
+        printf("Invalid input. Please enter a non-negative number for ID.\n\n");
+        printf("Enter item details:\n");
+        printf("ID: ");
+        while (getchar() != '\n')
+            ;
+    }
+
+    for (int i = 0; i < (*data)->itemCount; i++)
+    {
+        if ((*data)->inventory[i].id == newId)
+        {
+            CLEAR_SCREEN();
+            printf("Error: An item with the same ID already exists. Item not added.\n");
+            return;
+        }
+    }
+
+    printf("Name: ");
+    char newName[MAX_NAME];
+    scanf("%s", newName);
+    for (int i = 0; i < (*data)->itemCount; i++)
+    {
+        if (strcmp((*data)->inventory[i].name, newName) == 0 || strcmp((*data)->inventory[i].name, newName) == 32 || strcmp((*data)->inventory[i].name, newName) == -32)
+        {
+            CLEAR_SCREEN();
+            printf("Error: An item with the same name already exists. Item not added.\n");
+            return;
+        }
+    }
+
+    printf("Price: ");
+    while (scanf("%f", &(*data)->inventory[(*data)->itemCount].price) != 1 || (*data)->inventory[(*data)->itemCount].price < 0)
+    {
+        CLEAR_SCREEN();
+        printf("Invalid input. Please enter a non-negative number for Price.\n\n");
+        printf("Enter item details:\n");
+        printf("ID: %d\n", newId);
+        printf("Name: %s\n", newName);
+        printf("Price: ");
+        while (getchar() != '\n')
+            ;
+    }
+
+    printf("Quantity: ");
+    while (scanf("%d", &(*data)->inventory[(*data)->itemCount].quantity) != 1 || (*data)->inventory[(*data)->itemCount].quantity < 0)
+    {
+        CLEAR_SCREEN();
+        printf("Invalid input. Please enter a non-negative number for Quantity.\n\n");
+        printf("Enter item details:\n");
+        printf("ID: %d\n", newId);
+        printf("Name: %s\n", newName);
+        printf("Price: %.2f\n", (*data)->inventory[(*data)->itemCount].price);
+        printf("Quantity: ");
+        while (getchar() != '\n')
+            ;
+    }
+
+    printf("Category: ");
+    scanf("%s", (*data)->inventory[(*data)->itemCount].category);
+    (*data)->inventory[(*data)->itemCount].id = newId;
+    strcpy((*data)->inventory[(*data)->itemCount].name, newName);
+    ((*data)->itemCount)++;
+
+    CLEAR_SCREEN();
+    printf("Item added successfully!\n");
+}
+
 void removeItem(struct InventoryData *data)
 {
 	CLEAR_SCREEN();
